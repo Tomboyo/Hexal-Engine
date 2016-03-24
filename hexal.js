@@ -623,6 +623,9 @@ HexalEngine.prototype.zoom = function(x, y) {
   );
   
   this.windowResize(document.body.offsetWidth, document.body.offsetHeight);
+  if (x < 1 || y < 1) {
+    this.chunk();
+  }
   this.renderViewport();
 }
 
