@@ -563,6 +563,11 @@ HexalEngine.prototype.cubicToPx = function(a, d) {
 //Does not affect apparent size of canvases (CSS properties do this)
 //
 HexalEngine.prototype.windowResize = function(width, height) {
+  // Chunk if the viewport got bigger
+  if (width > this.gfx.VCanvas.offsetWidth || height > this.gfx.VCanvas.offsetHeight) {
+    map.chunk();
+  }
+  
   this.gfx.VCanvas.width  = Math.floor(width / this.ui.scale[0]);
   this.gfx.VCanvas.height = Math.floor(height / this.ui.scale[1]);
   this.gfx.HCanvas.width  = Math.floor(width / this.ui.scale[0]);

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/~tasimmons/plugin/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="main.css" />
     
-    <!-- JQuery (Dep) -->
+    <!-- JQuery -->
     <script src="/~tasimmons/plugin/jquery/jquery.min.js"></script>
     
     <!-- Hexal Engine -->
@@ -21,17 +21,66 @@
   </head>
 
   <body>
-    <div class="container">
-      <h1 class="text-center">HexalEngine Demonstration</h1>
-      <p class="lead">
-        HexalEngine is an isometric rendering engine that presents an array of objects (called "hexals") in an axial grid.
-      </p>
-      
-      <div id="map_container">
-        <canvas id="map">If you can read this, your browser is either out of date or does not support HTML5 Canvases. To fix this, simply download the latest version of Chrome, Firefox, Internet Explorer, Safari, Opera, or any other HTML5 canvas-compliant browser.
-        </canvas>
-      </div>
-    </div>
+    <div id="wrapper">
+      <nav>
+        <ul class="nav nav-pills pull-left">
+          <li><a href="/~tasimmons/">Back to Home</a></li>
+        </ul>
+      </nav>
+      <div class="container">
+        
+        <h1 class="text-center"><span class="text-hexal">Hexal</span><span class="text-engine">Engine</span> Demonstration</h1>
+        <p class="lead text-center">
+          HexalEngine is an isometric rendering engine that presents an array of objects (called "hexals") in an axial grid.<br>
+          <small><small>
+            Controls: <strong>Pan</strong> with mouse (click & drag) or arrow keys; <strong>Zoom</strong> in/out with +/-; <strong>Move slice</strong> with &lt; and &gt;
+          </small></small><br>
+          <strong>See below</strong> for an explanation of the project
+        </p>
+        
+        <div id="map_container" class="text-right">
+          <button id="toggle_fullscreen" class="btn btn-default text-center">FS</button>
+          <canvas id="map">If you can read this, your browser is either out of date or does not support HTML5 Canvases. To fix this, simply download the latest version of Chrome, Firefox, Internet Explorer, Safari, Opera, or any other HTML5 canvas-compliant browser.
+          </canvas>
+        </div>
+        
+        <h4 class="text-center">Technical Details</h4>
+        <p>
+          <dl class="dl-horizontal">
+            <dt>Technology</dt>
+            <dd>HexalEngine is written exclusively in vanilla JavaScript and renders via the HTML5 canvas element. As such, only modern, up-to-date browsers will be able to view this demonstration performantly. The engine exports a UI-API that is wired to browser events via JQuery (it is up to the implementing programmer to decide how best to trigger the UI-API; I use JQuery here to save time).</dd>
+            <br>
+            
+            <dt>Object Structure</dt>
+            <dd>HexalEngine has two primary datastructures, the HexalEngine prototype and the subordinate Hexal prototype. The latter is a small data collection used to track points in 2-space, the abstract component of the visible hexagons in the demo. The other prototype, HexalEngine, does the vast majority of the work, responsible for organizing, manipulating, and rendering Hexals as hexagons (it even knows how to create the hexagon rasters).</dd>
+            <br>
+            
+            <dt>Axial Coordinates</dt>
+            <dd>Axial coordinates are very similar to cartesian, except the two axes are not at a right angle. HexalEngine uses axial coordinates to place hexagons, which produces a coordinate system that is much more intelligible thana  staggered cartesian system (which was the implementation I chose in a preceding version.) Uniquely identifying Hexals is a slightly more laborious task, but can be achieved by counting outwards from the center of the map in rings (the id is derived by a finite integral sum, so the calculation is neat and performant). Obligatory: "I used Real Analysis for something!"</dd>
+            <br>
+            
+            <dt>Graphics Processing</dt>
+            <dd>
+              <ul>
+                <li>The hexagons that HexalEngine renders are not, indeed, true hexagons, because of the unfortunate fact that <em>true</em> hexagons have irrational side lengths. As such, they can not be rendered in discrete pixel units; that is, to render a true hexagon would be to trigger antialiasing (which can not be disabled in all browsers) or cause graphical artifacts on hexagon boundaries.</li>
+                <li>Because of performance issues, extreme care must be taken when rendering <em>anything</em> to a canvas. The typical practice of prerendering in many steps is completely untenable in most browsers, especially since hardware acceleration is not always invoked opportunistically. HexalEngine subdivides the world into rectangular units ("chunks") which are prerendered a single time and cached as the client pans the map. The initial prerender step causes some lag but also triggers hardware acceleration, moving the raster images to the GPU and increasing draw speed thereafter. The chunks, by nature of being larger than individual hexagons, also allow large swaths of the map to be rendered in fewer steps (the canvas drawImage method has a significant amount of overhead, so colume of calls weights more than size of images.) Thus, by "chunking" the map into appropriately-sized units, HexalEngine is able to maximize performance by minimizing the number of draw steps per frame and triggering GPU acceleration.
+                <li>HexalEngine only does as much work as it needs to. When chunks pan off-screen, they are not rendered, which is to be expected of ny rendering engine. Moreover, each draw step merely copies and translates the already-rendered screen, utilizing the preceding draw step as a sort of prerender step for the next. HexalEngine then must only fill in the gaps along the edges of the viewport, achieved by pasting chunks where appropriate. This step of translating the scene globs many draw operations into one, improving performance significantly.</li>
+                <li>A noteworthy feature of HexalEngine is that it does <em>not</em> rerender chunks when the map is rescaled (zoomed). This was, at one point, an implementation feature that has since been replaced with clever css tricks: By altering the canvas width and height attributes independently of the css attributes of the same name, the browser will happily render a scaled-up or -down version of the scene very performantly. The only drawback of this method is the resolution does not change, so the quality of the image becomes distorted. This could be resolved via mipmapping.</li>
+                <li>The most complex aspect of HexalEngine is rendering visible Hexals below the surface that (which may be partially obscured), creating the illusion of depth (2.5D, isometric display, psudo-3D, etc.) This is achieved through carefully optimized sampling, where the engine chooses points in space and "drills down" through the map until it finds an occupied space (think raycasting). The engine uses a few mathematical calculations (including GCD; obligatory: "I used Number Theory for something!") to minimize the number of points that must be sampled to the absolute minimum. This optimization results in a tidy performance gain, though this is hardly noticable with intelligent chunking (every little bit counts though, and the technology is all the more "really cool" because of it).</li>
+              </ul>
+            </dd>
+            <br>
+          </dl>
+        </p>
+        
+        <h4 class="text-center">Project Goals</h4>
+        <p>
+          I am investigating a few small graphical bugs, but otherwise the engine is relatively feature-complete with regard to managing Hexals. I intend to implement a rich set of UI commands for selecting and manipulating groups of hexals, including pathfinding algorithms, relatively soon. Building from this, adding "entitites" and "contents" to the Hexals will be the next step, giving the user something to interact with besides the raw board. Around this time I will work on implementing the user-agent fps-controlled requestAnimFrame method. I also have a fractal terrain generation algorithm that I can easily adapt to the board, for the added cool-factor. It's all about the cool-factor.
+        </p>
+        
+        <small><small>The project is the intellectual property of Thomas Simmons. Do not use, copy, or distribute without permission.</small></small>
+      </div><!-- container -->
+    </div><!-- wrapper -->
   </body>
   
   <!-- Page Initialization -->

@@ -86,8 +86,30 @@ $(document).ready(function() {
   */
   
   //Map Resizing
-  canvas.on('resize', function() {
-    map.windowResize(document.body.offsetWidth, document.body.offsetHeight);
-    map.renderViewport([map.gfx.VCanvas.width, map.gfx.VCanvas.height]);
+  var old = [canvas[0].offsetWidth, canvas[0].offsetHeight];
+  $(window).on('resize', function() {
+    if (canvas[0].offsetWidth != old[0] || canvas[0].offsetHeight != old[1]) {
+      map.windowResize(canvas[0].offsetWidth, canvas[0].offsetHeight);
+      old = [canvas[0].offsetWidth, canvas[0].offsetHeight];
+      map.renderViewport();
+    }
+  });
+  
+  // Full Screen Toggle
+  $('#toggle_fullscreen').on('click', function() {
+    $this = $(this);
+    $this.toggleClass('fs');
+    canvas.toggleClass('fs');
+    window.scrollTo(0, 0); // Prevent odd positioning bug
+    $(document.body).toggleClass('fs');
+  }).one('click', function a() {
+    map.windowResize(canvas[0].offsetWidth, canvas[0].offsetHeight);
+    map.chunk();
+    map.renderViewport();
+    $this.one('click', function() {
+      map.windowResize(canvas[0].offsetWidth, canvas[0].offsetHeight);
+      map.renderViewport();
+      $this.one('click', a);
+    });
   });
 });

@@ -1,6 +1,7 @@
 /* Functional */
 html,
 #map,
+#wrapper,
 #map_container {
   height: 100%;
   width: 100%;
@@ -18,8 +19,6 @@ body: {
   height: 600px;
 }
 
-
-
 /* Aesthetic */
 body {
   background-color: #333;
@@ -33,6 +32,56 @@ body {
   background-color: #080808;
   box-shadow: inset 0 0 50px #333;
   border-radius: 10px;
+}
+p, dt, dd, li {
+  text-align: justify;
+}
+.text-hexal {
+  color: #f60;
+}
+.text-engine {
+  color: #000;
+  text-shadow: 0px 3px 1px #888;
+}
+nav li {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+/* Fullscreen Styling */
+#toggle_fullscreen {
+  position: relative;
+  top: 30px;
+  height: 30px;
+  outline: unset;
+  /*color: #333;*/
+  border-radius: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+#toggle_fullscreen:focus {
+  background-color: #fff;
+}
+
+#toggle_fullscreen.fs {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  border-top-right-radius: 0px;
+}
+#map.fs {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+body.fs {
+  overflow: hidden;
 }
 
 
