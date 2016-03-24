@@ -69,9 +69,9 @@ $(document).ready(function() {
     
     // Slicing
     else if (event.which == 188 && event.shiftKey) {
-      map.pan(0, 0, -1);
-    } else if (event.which == 190 && event.shiftKey) {
       map.pan(0, 0, 1);
+    } else if (event.which == 190 && event.shiftKey) {
+      map.pan(0, 0, -1);
     }
   })
   
