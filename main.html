@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Game Board</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>HexalEngine Demo</title>
+    
+    <link rel="stylesheet" type="text/css" href="/~tasimmons/plugin/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="main.css" />
     
     <!-- JQuery (Dep) -->
@@ -15,8 +21,17 @@
   </head>
 
   <body>
-    <canvas id="map">If you can read this, your browser is either out of date or does not support HTML5 Canvases. To fix this, simply download the latest version of Chrome, Firefox, Internet Explorer, Safari, Opera, or any other HTML5 canvas-compliant browser.
-    </canvas>
+    <div class="container">
+      <h1 class="text-center">HexalEngine Demonstration</h1>
+      <p class="lead">
+        HexalEngine is an isometric rendering engine that presents an array of objects (called "hexals") in an axial grid.
+      </p>
+      
+      <div id="map_container">
+        <canvas id="map">If you can read this, your browser is either out of date or does not support HTML5 Canvases. To fix this, simply download the latest version of Chrome, Firefox, Internet Explorer, Safari, Opera, or any other HTML5 canvas-compliant browser.
+        </canvas>
+      </div>
+    </div>
   </body>
   
   <!-- Page Initialization -->

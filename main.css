@@ -1,22 +1,50 @@
-* {
-  margin: 0px;
-  padding: 0px;
-}
-html, body {
+/* Functional */
+html,
+#map,
+#map_container {
   height: 100%;
   width: 100%;
-  background-color: #FFFFFF;
 }
+body: {
+  width: 100%;
+}
+#map_container {
+  /* prevent scroll bars */
+  overflow: hidden;
+}
+#map {
+  /* Customize map size */
+  width: 100%;
+  height: 600px;
+}
+
+
+
+/* Aesthetic */
+body {
+  background-color: #333;
+  color: #fff;
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+}
+.container {
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+#map {
+  background-color: #080808;
+  box-shadow: inset 0 0 50px #333;
+  border-radius: 10px;
+}
+
+
+/* Performance? */
 canvas {
+  /*
   background-color: #000000;
-  
-  width: 100%;
-  height: 100%;
-  
   image-rendering: optimizeSpeed;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 	image-rendering: -moz-crisp-edges;
 	image-rendering: -webkit-optimize-contrast;
 	-ms-interpolation-mode: nearest-neighbor;
+  */
 }

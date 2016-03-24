@@ -79,7 +79,7 @@ function HexalEngine(data) {
       x: [0, 0],
       y: [0, 0]
     },
-    top: 0   // Highest layer of map to render.
+    top: 0           // Highest layer of map to render
   }  
   
   this.set(data);
@@ -127,7 +127,7 @@ function HexalEngine(data) {
   
   //TODO: make sure canvas is always contained by div
   this.renderBaseSprites();
-  this.windowResize(document.body.offsetWidth, document.body.offsetHeight);
+  this.windowResize(this.gfx.VCanvas.offsetWidth, this.gfx.VCanvas.offsetHeight);
 
   //Chunking
   this.gfx.chunkWidth  = Math.floor(this.gfx.VCanvas.width / 6);
@@ -622,7 +622,8 @@ HexalEngine.prototype.zoom = function(x, y) {
     Math.min(this.ui.scale_c[1][1], this.ui.scale[1] + y)
   );
   
-  this.windowResize(document.body.offsetWidth, document.body.offsetHeight);
+  // ToDo: Standards complience calculation of width & height
+  this.windowResize(this.gfx.VCanvas.offsetWidth, this.gfx.VCanvas.offsetHeight);
   if (x < 1 || y < 1) {
     this.chunk();
   }

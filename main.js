@@ -38,7 +38,9 @@ $(document).ready(function() {
       $(window).off('mousemove.pan');
     });
   });
+  
   $(window).on('keydown', function(event) {
+    // Panning
     if (event.which == 37) {
       map.pan(100, 0);
     } else if (event.which == 38) {
@@ -51,8 +53,26 @@ $(document).ready(function() {
       map.pan(0, 0, 1);
     } else if (event.which == 34) {
       map.pan(0, 0, -1);
+    } 
+    
+    // Zooming
+    else if (event.which == 107) {
+      map.zoom(0.1, 0.1);
+    } else if (event.which == 187 && event.shiftKey) {
+      map.zoom(0.1, 0.1);
+    } else if (event.which == 109) {
+      map.zoom(-0.1, -0.1);
+    } else if (event.which == 189) {
+      map.zoom(-0.1, -0.1)
     }
-  });
+    
+    // Slicing
+    else if (event.which == 188 && event.shiftKey) {
+      map.pan(0, 0, -1);
+    } else if (event.which == 190 && event.shiftKey) {
+      map.pan(0, 0, 1);
+    }
+  })
   
   //Right-click Select
   /*
@@ -64,15 +84,9 @@ $(document).ready(function() {
   });
   */
   
-  //Window Resizing
-  $(window).on('resize', function() {
+  //Map Resizing
+  canvas.on('resize', function() {
     map.windowResize(document.body.offsetWidth, document.body.offsetHeight);
     map.renderViewport([map.gfx.VCanvas.width, map.gfx.VCanvas.height]);
-  }).on('keydown', function() {
-    if (event.which == 107) {
-      map.zoom(0.1, 0.1);
-    } else if (event.which == 109) {
-      map.zoom(-0.1, -0.1);
-    }
   });
 });
