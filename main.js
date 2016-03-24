@@ -15,7 +15,8 @@ $(document).ready(function() {
       skirt: 20   //Height of hexagons (along the same axis as depth) in pixels.
     },
     gfx: {
-      VCanvas: canvas[0]  //Do Not Adjust. Reference to the <canvas> for rendering.
+      VCanvas: canvas[0],  //Do Not Adjust. Reference to the <canvas> for rendering.
+      renderDepth: 5
     }
   });
   

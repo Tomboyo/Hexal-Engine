@@ -1,6 +1,9 @@
 //****************************//
 //* Thomas 'Tomboyo' Simmons *//
 //****************************//
+/* HexalEngine, 2016
+ * Do not copy, distribute, or use this code without permission.
+ */
 
 //TODO: On very large maps, holding caching all chunks would be silly. Perhaps implement a maximal-grid that allows caching of /at most/ an MxN grid about the viewport. Thus, the user agent can cache an adjustable and tolerable hunk of the map, but not have to try to store /all/ of it.
 
@@ -52,6 +55,7 @@ function HexalEngine(data) {
     chunks: [],
     chunkWidth: 0,
     chunkHeight: 0,
+    renderDepth: 0,
     vctx: data.gfx.VCanvas.getContext('2d'),
     hctx: data.gfx.HCanvas.getContext('2d'),
     borderColor: [0, 0, 0, 64],
@@ -225,6 +229,12 @@ HexalEngine.prototype.set = function(data) {
       }
     }
   }
+  
+  if (this.gfx.renderDepth < 1) {
+    this.gfx.renderDepth = 1;
+  } else if (this.gfx.renderDepth > this.map.depth) {
+    this.gfx.renderDepth = this.map.depth;
+  }
   if (data.ui) {
     for (var p in this.ui) {
       if (data['ui'][p] !== undefined) {
@@ -313,9 +323,10 @@ HexalEngine.prototype.render = function(h, ctx, modx, mody) {
   ctx.drawImage(this.gfx.bases[h.baseType][1], x, y);
   
   //Apply Shadow
+  // Never dips below 20% illumination; steady gradient
   /**/
   if (h.d < this.ui.top) {
-    ctx.globalAlpha = 1 - (h.d / this.ui.top);
+    ctx.globalAlpha = 0.8 * ((this.ui.top - h.d) / (this.gfx.renderDepth - 1))
     ctx.drawImage(this.gfx.bases["shadow"][1], x, y);
     ctx.globalAlpha = 1;
   }
@@ -458,7 +469,8 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
   ctx.translate(-modx, -mody);
   
   //render new hexagons to region
-  for (var d = 0; d < render.length; d++) {
+  //for (var d = 0; d < render.length; d++) {
+  for (var d = this.map.depth - this.gfx.renderDepth; d < this.map.depth; d++) {
     for (var z = 0; z < render[d].length; z++) {
       for (var i = 0; i < render[d][z].length; i++) {
         var h = render[d][z][i];
