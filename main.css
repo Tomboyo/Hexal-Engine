@@ -39,10 +39,6 @@ p, dt, dd, li {
 .text-hexal {
   color: #f60;
 }
-.text-engine {
-  color: #000;
-  text-shadow: 0px 3px 1px #888;
-}
 nav li {
   margin-left: 10px;
   margin-top: 10px;

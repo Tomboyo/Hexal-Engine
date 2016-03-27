@@ -29,13 +29,13 @@
       </nav>
       <div class="container">
         
-        <h1 class="text-center"><span class="text-hexal">Hexal</span><span class="text-engine">Engine</span> Demonstration</h1>
+        <h1 class="text-center"><span class="text-hexal">HexalEngine</span> Demonstration</h1>
         <p class="lead text-center">
           HexalEngine is an isometric rendering engine that presents an array of objects (called "hexals") in an axial grid.<br>
           <small><small>
-            Controls: <strong>Pan</strong> with mouse (click & drag) or arrow keys; <strong>Zoom</strong> in/out with +/-; <strong>Move slice</strong> with &lt; and &gt;
+            Controls: <strong>Pan</strong> with mouse (click & drag) or arrow keys; <strong>Zoom</strong> in/out with +/-; <strong>Move slice</strong> with &lt;/&gt; or PgUp/PgDn
           </small></small><br>
-          <strong>See below</strong> for an explanation of the project
+          For the best experience, view in Chrome. Not intended for mobile devices. <strong>See below</strong> for an explanation of the project
         </p>
         
         <div id="map_container" class="text-right">
@@ -43,6 +43,11 @@
           <canvas id="map">If you can read this, your browser is either out of date or does not support HTML5 Canvases. To fix this, simply download the latest version of Chrome, Firefox, Internet Explorer, Safari, Opera, or any other HTML5 canvas-compliant browser.
           </canvas>
         </div>
+        
+        <h4 class="text-center">Purpose</h4>
+        <p>
+          The point of this project is primarily for me to experiment with canvas, but it is also an excellent opportunity to learn healthy development practices. For instance, I have practiced quite a bit with git (culminating in a quite successful branching pattern and filesystem structure) and track bugs and planned features in Trello, now. Largely as a result of the complexity of the project, I have become more focused with careful planning and prototyping, leading to better code on the first draft; whiteboarding has become a regular exercise.
+        </p>
         
         <h4 class="text-center">Technical Details</h4>
         <p>
@@ -70,12 +75,27 @@
               </ul>
             </dd>
             <br>
+            
+            <dt>Git</dt>
+            <dd>With approximately 700 lines and a few rather complex spots of code, I thought it prudent to track the whole thing with Git. I currently have two repositories, one listed and the other unlisted, that I push and pull to a remote repository. This way, my public directory of code remains in a nice, stable state for the passer-by to examine while I work in my unlisted directory. Then I can just pull over my thoroughly-tested changes to show off recent development.</dd>
+            <br>
           </dl>
         </p>
         
         <h4 class="text-center">Project Goals</h4>
         <p>
-          I am investigating a few small graphical bugs, but otherwise the engine is relatively feature-complete with regard to managing Hexals. I intend to implement a rich set of UI commands for selecting and manipulating groups of hexals, including pathfinding algorithms, relatively soon. Building from this, adding "entitites" and "contents" to the Hexals will be the next step, giving the user something to interact with besides the raw board. Around this time I will work on implementing the user-agent fps-controlled requestAnimFrame method. I also have a fractal terrain generation algorithm that I can easily adapt to the board, for the added cool-factor. It's all about the cool-factor.
+          These are all tracked on a Trello board, but I like to post a few to elucidate my interests:
+          <ul>
+            <li>Add functionality for users to select hexes. This is mostly done and is currently undergoing testing.</li>
+            <li>Implement a fractal terrain generation algorithm. The algorithm is mostly done and is currently in the bugfixing stage.
+              <ul>
+                <li>This may involve creating an API that accepts a generation algorithm for convenience, but I could just take the well-formatted output of the algorithm and have it imported via a load function, instead.</li>
+              </ul>
+            </li>
+            <li>Set up QUnit tests (sooner rather than later) for all potentially automatable tests.</li>
+            <li>Create entity overlays for managing dynamic objects on the board.</li>
+            <li>Create map load/save functionality.</li>
+          </ul>
         </p>
         
         <small><small>The project is the intellectual property of Thomas Simmons. Do not use, copy, or distribute without permission.</small></small>
