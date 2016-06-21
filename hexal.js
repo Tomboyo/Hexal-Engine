@@ -1,9 +1,6 @@
 //****************************//
 //* Thomas 'Tomboyo' Simmons *//
 //****************************//
-/* HexalEngine, 2016
- * Do not copy, distribute, or use this code without permission.
- */
 
 //TODO: On very large maps, holding caching all chunks would be silly. Perhaps implement a maximal-grid that allows caching of /at most/ an MxN grid about the viewport. Thus, the user agent can cache an adjustable and tolerable hunk of the map, but not have to try to store /all/ of it.
 
