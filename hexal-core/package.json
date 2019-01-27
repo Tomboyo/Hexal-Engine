@@ -1,0 +1,16 @@
+{
+  "name": "hexal-core",
+  "version": "0.1.0",
+  "description": "A 2.5D canvas rendering engine for 3D hexagon tile maps",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
+  }
+}

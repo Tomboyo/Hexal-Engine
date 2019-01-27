@@ -3,8 +3,10 @@ JavaScript Canvas engine for rendering 2.5D hexagonal-tile game boards of arbitr
 
 ## Note Bene
 
-I wrote this a long time ago, before I knew anything. The code is... rough, to put it favorably.
+This program was made a while ago before I knew much about software design or quality, and as such is very rough. However, because a few people have checked it out and because it will probably be fun, I've started dusting Hexal off to make it into something a little nicer.
 
-I've noticed two people have branched the code. It's an interesting project and I'd be happy to pick it back up to get it in better working condition. Create an issue or e-mail me at TomASimmons@gmail.com if you are interested in seeing this project become better designed. I'm up for the challenge, I still have my notes. :) It would probably be a ground-up rebuild, though, using the original for reference. (There is a lot of logic to calculate the location of pixel boundaries based on a rigid assumption about hexagon shape, for example, that is neither _simple_ nor _maintainable_. It should be replaced with proper sprite loading. There are plenty of other examples of omg-why in this repository.)
+Work will begin by organizing and updating the build process into something that resembles sanity. After that I will begin modularizing the hexal-core module, and finally brush up the demo. I will try to back-fill tests as I go.
+
+I will be working largely out of master when possible.
 
 Thanks for your interest!
