@@ -1,29 +1,7 @@
-//****************************//
-//* Thomas 'Tomboyo' Simmons *//
-//****************************//
-
-//TODO: On very large maps, holding caching all chunks would be silly. Perhaps implement a maximal-grid that allows caching of /at most/ an MxN grid about the viewport. Thus, the user agent can cache an adjustable and tolerable hunk of the map, but not have to try to store /all/ of it.
-
-//TODO: add functions to upload custom sprites for hexes.
-//  All hexes will be the same size.
-
-//TODO: once all HexalEngine variables are stable, the set function needs to editcheck them and perform updates as necessary.
-
-//TODO: once all functions are relatively stable and functional:
-// move all draw operations to a draw() loop. This will prevent draw calls from happening too often
-// and allow flagging instead of explicit draw calls. Use requestAnimationFrame().
-
-//TODO: bring in Is.js
-
-"use strict";
+import 'src/hexal';
+import { cubicToLinear } from 'src/coordinates';
 
 export default HexalEngine;
-
-//IE shim
-Number.isInteger = Number.isInteger || function (a) {
-  return (a === Math.floor(a));
-};
-
 
 function HexalEngine(data) {
   var  d, i, j, ax, ay, type, xlen, ylen;
@@ -90,26 +68,6 @@ function HexalEngine(data) {
 
   this.set(data);
 
-  //Populate map.data
-  /*
-  var gen = new TerraGen(Math.ceil(Math.log(this.map.r) / Math.log(2)));
-  var heightData = gen.get();
-  //console.log(heightData);
-  for (var d = 0; d < this.map.depth; d += 1) {
-    this.map.data.push([]);
-    for (var ax = -this.map.r; ax <= this.map.r; ax += 1) {
-      for (var ay = -this.map.r; ay <= this.map.r; ay += 1) {
-        if (Math.abs(0-ax-ay) > this.map.r) {
-          continue;
-        }
-
-        var type = d <= heightData[0][ax + this.map.r][ay + this.map.r] * this.map.depth ? "tan" : "default";
-        this.map.data[d][this.cubicToIndex([ax, ay, 0-ax-ay])] = new this.Hexal(ax, ay, d, type, (type == "default"));
-      }
-    }
-  }
-  */
-
   for (d = 0; d < this.map.depth; d += 1) {
     this.map.data.push([]);
     for (ax = 0-this.map.r; ax <= this.map.r; ax += 1) {
@@ -124,7 +82,7 @@ function HexalEngine(data) {
         else if (type < 0.45) { type = "tan"; }
         else if (type < 0.6) { type = "brown"; }
         else { type = "default"; }
-        this.map.data[d][this.cubicToIndex([ax, ay, 0-ax-ay])] = new this.Hexal(ax, ay, d, type, (type === "default"));
+        this.map.data[d][cubicToLinear([ax, ay, 0-ax-ay])] = new Hexal(ax, ay, d, type, (type === "default"));
       }
     }
   }
@@ -443,7 +401,7 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
       p = null;
       for (depth = this.ui.top; depth >= 0; depth -= 1) {
         c = this.pxToCubic([x, y], depth);
-        i = this.cubicToIndex(c);
+        i = cubicToLinear(c);
         n = this.map.data[depth][i];
         if (n && !n.empty) {
           p = this.cubicToPx(c, depth);
@@ -481,27 +439,6 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
   ctx.translate(modx, mody);
   //ctx.strokeRect(0, 0, this.gfx.chunkWidth, this.gfx.chunkHeight);
 };
-
-
-//Convert Hexagon Axial Coordinates to Hexagon Map Array Index
-//[axial_x, axial_y, axial_z]
-//
-HexalEngine.prototype.cubicToIndex = function(a) {
-  var x = Math.abs(a[0]),
-      y = Math.abs(a[1]),
-      z = Math.abs(a[2]),
-      ring = Math.max(x, y, z);
-
-  var prev_count = (ring < 2 ? ring : 3 * (ring * ring - ring) + 1);
-
-  if (a[1] === -ring) { return prev_count + z; }
-  if (a[2] === ring)  { return prev_count + ring + x; }
-  if (a[0] === -ring) { return prev_count + 2 * ring + y; }
-  if (a[1] === ring)  { return prev_count + 3 * ring + z; }
-  if (a[2] === -ring) { return prev_count + 4 * ring + x; }
-  if (a[0] === ring)  { return prev_count + 5 * ring + y; }
-};
-
 
 //Pixel Coordinates to Cubic
 //Convert Cartesian Coordinates to Hexagon Axial Coordinates (Surface Hexagons)
@@ -656,7 +593,7 @@ HexalEngine.prototype.zoom = function(x, y) {
 HexalEngine.prototype.select = function(x, y) {
   x = Math.floor((x - this.gfx.dx) / this.ui.scale[0]);
   y = Math.floor((y - this.gfx.dy) / this.ui.scale[1]);
-  return this.map.data[this.ui.top][this.cubicToIndex(this.pxToCubic([x, y]))];
+  return this.map.data[this.ui.top][cubicToLinear(this.pxToCubic([x, y]))];
 };
 
 //Get greatest common divisor of INTEGERS a and b
@@ -688,21 +625,3 @@ HexalEngine.prototype.GCD = function(dividend, divisor) {
     divisor = remainder;
   }
 };
-
-
-//Hexal
-//Hexal constructor
-//
-HexalEngine.prototype.Hexal = function(x, y, d, baseType, empty) {
-  this.x = x;
-  this.y = y;
-  this.z = 0-x-y;
-  this.d = d;
-  this.i = HexalEngine.prototype.cubicToIndex([x, y, 0-x-y]);
-  this.baseType = baseType || 'default';
-  this.empty = empty || false;
-};
-
-//
-// ☼ All craftgingership is of best quality! ☼
-//
