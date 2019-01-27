@@ -1,4 +1,5 @@
 import Hexal from 'src/hexal';
+import * as MoreMath from 'src/more-math';
 import {
   cubicToLinear,
   pixelToCubic
@@ -379,7 +380,7 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
       modx = this.gfx.chunkWidth * ax,
       mody = this.gfx.chunkHeight * ay,
       xstep = Math.floor(this.hex.dx / 2),
-      ystep = (this.hex.skirt > 0) ? this.GCD(this.hex.dy, this.hex.skirt) : this.hex.dy,
+      ystep = (this.hex.skirt > 0) ? MoreMath.gcd(this.hex.dy, this.hex.skirt) : this.hex.dy,
       mx = modx + this.gfx.chunkWidth + xstep,
       yoff = Math.max(this.hex.dy, this.hex.skirt),
       render = [], len, c, d, i, j, p, n, x, y, z, my, depth;
@@ -554,34 +555,4 @@ HexalEngine.prototype.select = function(x, y) {
   x = Math.floor((x - this.gfx.dx) / this.ui.scale[0]);
   y = Math.floor((y - this.gfx.dy) / this.ui.scale[1]);
   return this.map.data[this.ui.top][cubicToLinear(pixelToCubic(this, [x, y]))];
-};
-
-//Get greatest common divisor of INTEGERS a and b
-//TODO?: move to lib (along with IE shim, really)
-HexalEngine.prototype.GCD = function(dividend, divisor) {
-  var quotient, remainder;
-
-  if (!Number.isInteger(dividend) || !Number.isInteger(divisor)) {
-    console.error("Arguments must be integers");
-    return;
-  }
-  dividend = Math.abs(dividend);
-  divisor = Math.abs(divisor);
-
-  if (dividend < divisor) {
-    var tmp = dividend;
-    dividend = divisor;
-    divisor = tmp;
-  }
-
-  while (true) {
-    quotient = Math.floor(dividend / divisor);
-    remainder = dividend - quotient * divisor;
-    if (remainder === 0) {
-      return divisor;
-    }
-
-    dividend = divisor;
-    divisor = remainder;
-  }
 };
