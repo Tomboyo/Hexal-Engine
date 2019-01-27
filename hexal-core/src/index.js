@@ -17,8 +17,7 @@
 
 "use strict";
 
-// Temporary as part of migration to webpack build.
-window.HexalEngine = HexalEngine;
+export default HexalEngine;
 
 //IE shim
 Number.isInteger = Number.isInteger || function (a) {

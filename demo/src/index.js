@@ -1,6 +1,8 @@
+import 'hexal-core';
+
 $(document).ready(function() {
   var canvas = $('#map');
-  
+
   // Map instantiation
   // Adjust the indicated values to change the dimensions and appearance of the map.
   //
@@ -11,7 +13,7 @@ $(document).ready(function() {
     },
     hex: {
       size:  30,  //Radius of hexagons in pixels (not exact; +- 2)
-      bord:  01,  //Thickness of border drawn on hexagons. 0 turns this off.
+      bord:   1,  //Thickness of border drawn on hexagons. 0 turns this off.
       skirt: 20   //Height of hexagons (along the same axis as depth) in pixels.
     },
     gfx: {
@@ -19,13 +21,13 @@ $(document).ready(function() {
       renderDepth: 5
     }
   });
-  
+
   window.map = map;
-  
+
   //
   // UI
   //
-  
+
   //Map Panning
   canvas.on('mousedown', function(event) {
     var ox = event.clientX;
@@ -39,7 +41,7 @@ $(document).ready(function() {
       $(window).off('mousemove.pan');
     });
   });
-  
+
   $(window).on('keydown', function(event) {
     // Panning
     if (event.which == 37) {
@@ -54,8 +56,8 @@ $(document).ready(function() {
       map.pan(0, 0, 1);
     } else if (event.which == 34) {
       map.pan(0, 0, -1);
-    } 
-    
+    }
+
     // Zooming
     else if (event.which == 107) {
       map.zoom(0.1, 0.1);
@@ -66,7 +68,7 @@ $(document).ready(function() {
     } else if (event.which == 189) {
       map.zoom(-0.1, -0.1)
     }
-    
+
     // Slicing
     else if (event.which == 188 && event.shiftKey) {
       map.pan(0, 0, 1);
@@ -74,7 +76,7 @@ $(document).ready(function() {
       map.pan(0, 0, -1);
     }
   })
-  
+
   //Right-click Select
   /*
   canvas.on('contextmenu', function(event) {
@@ -84,7 +86,7 @@ $(document).ready(function() {
     console.log(map.select(event.clientX, event.clientY));
   });
   */
-  
+
   //Map Resizing
   var old = [canvas[0].offsetWidth, canvas[0].offsetHeight];
   $(window).on('resize', function() {
@@ -94,7 +96,7 @@ $(document).ready(function() {
       map.renderViewport();
     }
   });
-  
+
   // Full Screen Toggle
   $('#toggle_fullscreen').on('click', function() {
     $this = $(this);
