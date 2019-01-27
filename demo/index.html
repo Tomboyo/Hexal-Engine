@@ -4,25 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <title>Hexal Engine Demo</title>
-    
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="main.css" />
-    
+
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
-    
+
     <!-- Hexal Engine -->
-    <script src="hexal.js"></script>
-    
+    <script src="../hexal-core/hexal.js"></script>
+
     <!-- Fractal Generation Script -->
     <!--<script src="gen.js"></sript>-->
   </head>
 
   <body>
     <div id="wrapper">
-      <div class="container">        
+      <div class="container">
         <h1 class="text-center"><span class="text-hexal">Hexal Engine</span> Demonstration</h1>
         <p class="lead text-center">
           Hexal Engine is an isometric rendering engine that presents an array of objects (called "hexals") in an axial grid.<br>
@@ -31,13 +31,13 @@
           </small></small><br>
           For the best experience, view in Chrome. Not intended for mobile devices. <strong>See below</strong> for an explanation of the project. <a href="https://github.com/Tomboyo/Hexal-Engine">Github Source</a>
         </p>
-        
+
         <div id="map_container" class="text-right">
           <button id="toggle_fullscreen" class="btn btn-default text-center">FS</button>
           <canvas id="map">If you can read this, your browser is either out of date or does not support HTML5 Canvases. To fix this, simply download the latest version of Chrome, Firefox, Internet Explorer, Safari, Opera, or any other HTML5 canvas-compliant browser.
           </canvas>
         </div>
-        
+
         <h4 class="text-center">Purpose</h4>
         <!--
         <p>
@@ -47,22 +47,22 @@
         <p>
           This project is primarily an experimentation with the canvas API, but it also serves as routine exercise in healthy development patterns and practices. Needless to say it is also a study in vanilla JavaScript.
         </p>
-        
+
         <h4 class="text-center">Technical Details</h4>
         <p>
           <dl class="dl-horizontal">
             <dt>Technology</dt>
             <dd>Hexal Engine is written exclusively in vanilla JavaScript and renders via the HTML5 canvas element. As such, only modern, up-to-date browsers will be able to view this demonstration performantly. The engine exports a UI-API that is wired to browser events via JQuery (it is up to the implementing programmer to decide how best to trigger the UI-API; I use JQuery here to save time).</dd>
             <br>
-            
+
             <dt>Object Structure</dt>
             <dd>Hexal Engine has two primary datastructures, the Hexal Engine prototype and the subordinate Hexal prototype. The latter is a small data collection used to track points in 2-space, the abstract component of the visible hexagons in the demo. The other prototype, Hexal Engine, does the vast majority of the work, responsible for organizing, manipulating, and rendering Hexals as hexagons (it even knows how to create the hexagon rasters).</dd>
             <br>
-            
+
             <dt>Axial Coordinates</dt>
             <dd>Axial coordinates are very similar to cartesian, except the two axes are not at a right angle. Hexal Engine uses axial coordinates to place hexagons, which produces a coordinate system that is much more intelligible than a staggered cartesian system (which was the implementation I chose in a preceding version.) Uniquely identifying Hexals is a slightly more laborious task, but can be achieved by counting outwards from the center of the map in rings (the id is derived by a finite geometric sum, so the calculation is neat and performant). Obligatory: "I used Real Analysis for something!"</dd>
             <br>
-            
+
             <dt>Graphics Processing</dt>
             <dd>
               <ul>
@@ -79,7 +79,7 @@
       </div><!-- container -->
     </div><!-- wrapper -->
   </body>
-  
+
   <!-- Page Initialization -->
   <script src="main.js"></script>
 </html>
