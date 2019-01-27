@@ -1,0 +1,5 @@
+.gradle
+src
+build.gradle
+.npmignore
+webpack.config.js

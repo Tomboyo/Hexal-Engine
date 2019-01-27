@@ -2,7 +2,7 @@
   "name": "hexal-core",
   "version": "0.1.0",
   "description": "A 2.5D canvas rendering engine for 3D hexagon tile maps",
-  "main": "./dist/index.js",
+  "main": "dist/hexal-core.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"

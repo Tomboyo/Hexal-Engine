@@ -12,4 +12,5 @@ task clean() {
 task build() {
   dependsOn ':hexal-core:build'
   dependsOn ':demo:build'
+  shouldRunAfter 'clean'
 }

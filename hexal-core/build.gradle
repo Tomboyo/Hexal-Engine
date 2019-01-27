@@ -9,4 +9,5 @@ task clean(type: Delete) {
 task build() {
   dependsOn 'npm_install'
   dependsOn 'webpack'
+  shouldRunAfter 'clean'
 }

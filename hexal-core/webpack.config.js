@@ -4,8 +4,11 @@ module.exports = {
   mode: 'development',
   entry: './src/index.js',
   output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: 'hexal-core.js',
+    path: path.resolve(__dirname, 'dist'),
+    library: 'hexalCore',
+    libraryTarget: 'umd',
+    libraryExport: 'default'
   },
   resolve: {
     alias: {

@@ -1,12 +1,10 @@
-import 'src/hexal';
+import Hexal from 'src/hexal';
 import {
   cubicToLinear,
   pixelToCubic
 } from 'src/coordinates';
 
-export default HexalEngine;
-
-function HexalEngine(data) {
+export default function HexalEngine(data) {
   var  d, i, j, ax, ay, type, xlen, ylen;
 
   this.debug = {};
@@ -395,15 +393,15 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
   }
 
   //Sample for hexagons
-  for (x = this.cubicToPx(pixelToCubic([modx - xstep, mody - ystep]))[0]; x <= mx; x += xstep) {
-    y = this.cubicToPx(pixelToCubic([x, mody]))[1] + this.hex.a - yoff;
+  for (x = this.cubicToPx(pixelToCubic(this, [modx - xstep, mody - ystep]))[0]; x <= mx; x += xstep) {
+    y = this.cubicToPx(pixelToCubic(this, [x, mody]))[1] + this.hex.a - yoff;
     my = mody + this.gfx.chunkHeight + yoff;
 
     while (y <= my) {
       //sample down
       p = null;
       for (depth = this.ui.top; depth >= 0; depth -= 1) {
-        c = pixelToCubic([x, y], depth);
+        c = pixelToCubic(this, [x, y], depth);
         i = cubicToLinear(c);
         n = this.map.data[depth][i];
         if (n && !n.empty) {
@@ -555,7 +553,7 @@ HexalEngine.prototype.zoom = function(x, y) {
 HexalEngine.prototype.select = function(x, y) {
   x = Math.floor((x - this.gfx.dx) / this.ui.scale[0]);
   y = Math.floor((y - this.gfx.dy) / this.ui.scale[1]);
-  return this.map.data[this.ui.top][cubicToLinear(pixelToCubic([x, y]))];
+  return this.map.data[this.ui.top][cubicToLinear(pixelToCubic(this, [x, y]))];
 };
 
 //Get greatest common divisor of INTEGERS a and b

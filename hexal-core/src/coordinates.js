@@ -29,41 +29,43 @@ export const cubicToLinear = (a) => {
  * This does not factor in delta-x and delta-y offsets affecting the map
  * (gfx.dx and gfx.dy).
  *
+ * @param config The HexalEngine map's configuration object. This is a crutch
+ * for refactoring.
  * @param a The pixel coordinate pair [x, y]
  * @param d The depth of the pixel coordinate pair within the hexal map
  * @return The cubic coordinates of the pixel coordinate pair at the correct
  * depth
  */
-export const pixelToCubic = (a, d) => {
+export const pixelToCubic = (config, a, d) => {
   var vb, vbox, vboy, b, low, hx, hy, hz;
 
-  d = (typeof d === "number" ? d : this.map.depth - 1);
+  d = (typeof d === "number" ? d : config.map.depth - 1);
 
-  a[1] -= this.hex.skirt * (this.map.depth - 1 - d);
+  a[1] -= config.hex.skirt * (config.map.depth - 1 - d);
 
   // Upper relevent horizontal boundary between rows of hexagons
-  vb = Math.floor((a[1]) / this.hex.dy);
+  vb = Math.floor((a[1]) / config.hex.dy);
 
   // vbox is x-origin of boundary.
-  vbox = Math.abs(this.map.r - vb) * this.hex.dx / 2;
+  vbox = Math.abs(config.map.r - vb) * config.hex.dx / 2;
 
   // vboy is the peak's distance from x=0.
-  vboy = vb * this.hex.dy;
+  vboy = vb * config.hex.dy;
 
   // height displacement at x from vb peak
-  b = Math.abs(this.hex.dx / 4 - Math.ceil(Math.abs(a[0] - vbox) % this.hex.dx / 2));
+  b = Math.abs(config.hex.dx / 4 - Math.ceil(Math.abs(a[0] - vbox) % config.hex.dx / 2));
 
   // calculate axial z if y-coordinate of boundary at x is greater
   if (a[1] < vboy + b) {
     vb -= 1;
-    vbox = Math.abs(this.map.r - vb) * this.hex.dx / 2;
+    vbox = Math.abs(config.map.r - vb) * config.hex.dx / 2;
   }
 
   //l is lowest x for this hz
-  low = -1 * Math.min(vb, this.map.r);
+  low = -1 * Math.min(vb, config.map.r);
 
-  hx = low + Math.floor((a[0] - vbox) / this.hex.dx);
-  hz = vb - this.map.r;
+  hx = low + Math.floor((a[0] - vbox) / config.hex.dx);
+  hz = vb - config.map.r;
   hy = 0 - hx - hz;
 
   return [hx, hy, hz];

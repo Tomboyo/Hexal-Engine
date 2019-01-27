@@ -1,4 +1,4 @@
-import 'hexal-core';
+import HexalEngine from 'hexal-core';
 
 $(document).ready(function() {
   var canvas = $('#map');
@@ -77,16 +77,6 @@ $(document).ready(function() {
     }
   })
 
-  //Right-click Select
-  /*
-  canvas.on('contextmenu', function(event) {
-    event.preventDefault();
-    var x = event.clientX - canvas.offset().left + $(document.body).scrollLeft();
-    var y = event.clientY - canvas.offset().top;
-    console.log(map.select(event.clientX, event.clientY));
-  });
-  */
-
   //Map Resizing
   var old = [canvas[0].offsetWidth, canvas[0].offsetHeight];
   $(window).on('resize', function() {
@@ -97,21 +87,29 @@ $(document).ready(function() {
     }
   });
 
-  // Full Screen Toggle
-  $('#toggle_fullscreen').on('click', function() {
-    $this = $(this);
-    $this.toggleClass('fs');
-    canvas.toggleClass('fs');
+  $('#toggle_fullscreen').one('click', function on() {
+    let $this = $(this);
+    let $body = $(document.body);
+
+    $this.addClass('fs');
+    canvas.addClass('fs');
+    $body.addClass('fs');
     window.scrollTo(0, 0); // Prevent odd positioning bug
-    $(document.body).toggleClass('fs');
-  }).one('click', function a() {
+
     map.windowResize(canvas[0].offsetWidth, canvas[0].offsetHeight);
     map.chunk();
     map.renderViewport();
-    $this.one('click', function() {
+
+    $this.one('click', function off() {
+      $this.removeClass('fs');
+      canvas.removeClass('fs');
+      $body.removeClass('fs');
+
       map.windowResize(canvas[0].offsetWidth, canvas[0].offsetHeight);
+      map.chunk();
       map.renderViewport();
-      $this.one('click', a);
+
+      $this.one('click', on);
     });
   });
 });

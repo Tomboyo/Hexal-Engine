@@ -4,10 +4,12 @@ plugins {
 
 task clean(type: Delete) {
   delete 'dist/main.js'
+  delete 'node_modules/hexal-core'
 }
 
 task build() {
   dependsOn 'npm_install'
   dependsOn 'webpack'
   shouldRunAfter ':hexal-core:build'
+  shouldRunAfter 'clean'
 }

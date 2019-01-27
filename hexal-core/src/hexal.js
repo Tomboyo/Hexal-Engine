@@ -1,6 +1,6 @@
 import { cubicToLinear } from 'src/coordinates';
 
-export class Hexal {
+export default class Hexal {
   constructor(x, y, d, baseType, empty) {
     this.x = x;
     this.y = y;
