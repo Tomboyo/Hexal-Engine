@@ -1,0 +1,10 @@
+subprojects {
+  task webpack(type: Exec) {
+    commandLine "$projectDir/node_modules/.bin/webpack"
+  }
+}
+
+task build() {
+  dependsOn ':hexal-core:build'
+  dependsOn ':demo:build'
+}
