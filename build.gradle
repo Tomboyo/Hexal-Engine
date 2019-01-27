@@ -4,6 +4,11 @@ subprojects {
   }
 }
 
+task clean() {
+  dependsOn ':hexal-core:clean'
+  dependsOn ':demo:clean'
+}
+
 task build() {
   dependsOn ':hexal-core:build'
   dependsOn ':demo:build'
