@@ -2,7 +2,8 @@ import Hexal from 'src/hexal';
 import * as MoreMath from 'src/more-math';
 import {
   cubicToLinear,
-  pixelToCubic
+  pixelToCubic,
+  cubicToPixel
 } from 'src/coordinates';
 
 export default function HexalEngine(data) {
@@ -394,8 +395,8 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
   }
 
   //Sample for hexagons
-  for (x = this.cubicToPx(pixelToCubic(this, [modx - xstep, mody - ystep]))[0]; x <= mx; x += xstep) {
-    y = this.cubicToPx(pixelToCubic(this, [x, mody]))[1] + this.hex.a - yoff;
+  for (x = cubicToPixel(this, pixelToCubic(this, [modx - xstep, mody - ystep]))[0]; x <= mx; x += xstep) {
+    y = cubicToPixel(this, pixelToCubic(this, [x, mody]))[1] + this.hex.a - yoff;
     my = mody + this.gfx.chunkHeight + yoff;
 
     while (y <= my) {
@@ -406,7 +407,7 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
         i = cubicToLinear(c);
         n = this.map.data[depth][i];
         if (n && !n.empty) {
-          p = this.cubicToPx(c, depth);
+          p = cubicToPixel(this, c, depth);
           if (render[depth][n.z + this.map.r].indexOf(n) < 0) {
             render[depth][n.z + this.map.r].push(n);
           }
@@ -441,19 +442,6 @@ HexalEngine.prototype.prepareChunk = function(ax, ay) {
   ctx.translate(modx, mody);
   //ctx.strokeRect(0, 0, this.gfx.chunkWidth, this.gfx.chunkHeight);
 };
-
-//Axial Coordinates To Pixels
-//Convert hexal array axial coordinates to cartesian pixel coordinates (origina of hexal)
-//Does NOT factor gfx.dx, gfx.dy into calculation.
-//
-HexalEngine.prototype.cubicToPx = function(a, d) {
-  d = (typeof d === "number" ? d : this.map.depth - 1);
-  return [
-    (this.hex.dx) * (a[0] + this.map.r) + (this.hex.dx / 2) * a[2],
-    (this.hex.dy) * (a[2] + this.map.r) + (this.hex.skirt * (this.map.depth - 1 - d))
-  ];
-};
-
 
 //Update logic for when the viewport changes dimensions
 //Width and height in pixels of rendering canvases.

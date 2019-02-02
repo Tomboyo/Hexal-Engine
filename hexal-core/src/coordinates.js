@@ -70,3 +70,21 @@ export const pixelToCubic = (config, a, d) => {
 
   return [hx, hy, hz];
 };
+
+/**
+ * Convert cubic coordinates to pixel cartesian coordinates.
+ *
+ * This does not factor in delta-x and delta-y offsets affecting the map
+ * (gfx.dx and gfx.dy).
+ *
+ * @param config The HexalEngine map's configuration object. This is a crutch
+ * for refactoring.
+ * @param a The cubic coordinate triple
+ * @param d The depth of the cubic triple within the map. The default is
+ * config.map.depth - 1.
+ */
+export const cubicToPixel = (config, a, d = config.map.depth - 1) => [
+  (config.hex.dx) * (a[0] + config.map.r) + (config.hex.dx / 2) * a[2],
+  (config.hex.dy) * (a[2] + config.map.r) +
+    (config.hex.skirt * (config.map.depth - 1 - d))
+];
